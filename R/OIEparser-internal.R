@@ -9,7 +9,7 @@ function(ystart, yend){
             h = new_handle()
             handle_setopt(h, customrequest = "POST")
             handle_setform(h, pdf_report_type="imm", month=as.character(m), year=as.character(y))
-            r = curl_fetch_memory('https://www.oie.int/wahis_2/public/wahid.php/Diseaseinformation/reportarchive', h)
+            r = curl_fetch_memory('https://wahis.woah.org/#/events', h)
             htm = rawToChar(r$content)
             htm = strsplit(htm, '\n')[[1]]
             htms = c(htms, htm[which(grepl('reports/en_', htm))])    
@@ -20,7 +20,7 @@ function(ystart, yend){
     links = substr(htms, 46, 136-22)
     pdfs = paste('en_', matrix(unlist(strsplit(links, 'en_')), ncol=2, byrow=T)[,2], sep='')
     pdfs[which(substr(pdfs,37-3,37)!='.pdf')] = paste(pdfs[which(substr(pdfs,37-3,37)!='.pdf')], 'pdf', sep='')
-    urls = paste('http://www.oie.int/wahis_2/temp/reports/', pdfs, sep='')
+    urls = paste('https://wahis.woah.org/#/events', pdfs, sep='')
     return(urls)
 }
 .oiedl <-
